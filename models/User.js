@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   name:     { type: String },
   points:   { type: Number, default: 0 },
+  points2:   { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now }
 });
 
