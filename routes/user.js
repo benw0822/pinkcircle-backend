@@ -3,6 +3,25 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const router = express.Router();
 
+// 註冊新會員
+router.post('/register', async (req, res) => {
+  try {
+    const { email, password, name, phone, gender, birthday, address, note } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email 和密碼必填' });
+    }
+    const existUser = await User.findOne({ email });
+    if (existUser) {
+      return res.status(400).json({ error: '信箱已註冊' });
+    }
+    const user = new User({ email, password, name, phone, gender, birthday, address, note });
+    await user.save();
+    res.json({ message: '註冊成功' });
+  } catch (err) {
+    res.status(500).json({ error: '註冊失敗' });
+  }
+});
+
 // 查詢自己會員資料
 router.get('/me', async (req, res) => {
   try {
