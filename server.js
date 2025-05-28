@@ -6,6 +6,9 @@ const authRoutes = require('./routes/auth');
 const app = express();
 app.use(express.json());
 
+const userRoutes = require('./routes/user');
+app.use('/api/user', userRoutes);
+
 // 連線到 MongoDB Atlas
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true, useUnifiedTopology: true
