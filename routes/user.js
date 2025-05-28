@@ -22,6 +22,25 @@ router.post('/register', async (req, res) => {
   }
 });
 
+// 登入
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email 和密碼必填' });
+    }
+    const user = await User.findOne({ email });
+    if (!user || user.password !== password) {
+      return res.status(400).json({ error: '帳號或密碼錯誤' });
+    }
+    // 產生 JWT token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    res.json({ token, user: { id: user._id, email: user.email, name: user.name } });
+  } catch (err) {
+    res.status(500).json({ error: '登入失敗' });
+  }
+});
+
 // 查詢自己會員資料
 router.get('/me', async (req, res) => {
   try {
