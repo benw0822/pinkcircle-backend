@@ -1,13 +1,17 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const authRoutes = require('./routes/auth');
 
 const app = express();
 app.use(express.json());
 
+// 1. 掛載會員登入/註冊相關路由
+const authRoutes = require('./routes/auth');
+app.use('/api/auth', authRoutes); // 登入路徑會是 /api/auth/login
+
+// 2. 掛載會員資料相關路由
 const userRoutes = require('./routes/user');
-app.use('/api/user', userRoutes);
+app.use('/api/user', userRoutes); // 查詢會員資料是 /api/user/me
 
 // 連線到 MongoDB Atlas
 mongoose.connect(process.env.MONGODB_URI, {
@@ -18,9 +22,7 @@ mongoose.connect(process.env.MONGODB_URI, {
   console.error('MongoDB connection error:', err);
 });
 
-// 掛載會員相關路由
-app.use('/api', authRoutes);
-
+// 首頁測試
 app.get('/', (req, res) => {
   res.send('Backend is running');
 });
