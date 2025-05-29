@@ -60,7 +60,7 @@ router.get('/me', async (req, res) => {
   }
 });
 
-// 修改自己會員資料
+// 修改自己會員資料（允許修改 points 欄位）
 router.put('/me', async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
@@ -73,8 +73,8 @@ router.put('/me', async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-    // 只允許更新特定欄位
-    const updateFields = ['name', 'email', 'phone', 'birthday', 'address', 'gender', 'note'];
+    // 允許更新 points 欄位
+    const updateFields = ['name', 'email', 'phone', 'birthday', 'address', 'gender', 'note', 'points'];
     updateFields.forEach(field => {
       if (typeof req.body[field] !== 'undefined') {
         user[field] = req.body[field];
