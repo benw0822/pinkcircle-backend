@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-
 const cors = require('cors');
 const app = express();
 
@@ -15,6 +14,10 @@ app.use('/api/auth', authRoutes); // 登入路徑會是 /api/auth/login
 // 2. 掛載會員資料相關路由
 const userRoutes = require('./routes/user');
 app.use('/api/user', userRoutes); // 查詢會員資料是 /api/user/me
+
+// 3. 掛載 VIP 專屬功能路由
+const vipRoutes = require('./routes/vip');
+app.use('/api/user', vipRoutes); // VIP 相關 API: /api/user/me, /api/user/activities, /api/user/qrcode
 
 // 連線到 MongoDB Atlas
 mongoose.connect(process.env.MONGODB_URI, {
